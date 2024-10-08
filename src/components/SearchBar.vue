@@ -12,17 +12,17 @@ const searchPhotos = async () => {
   if (!searchTerm.value) return;
   show.value = true;
   const allPhotos = photosStore.photoSearch(searchTerm.value);
-  if (allPhotos) {
-    photos.value = allPhotos
-    // show.value = false;
-  }
+  // if (allPhotos) {
+  //   photos.value = allPhotos
+  //   // show.value = false;
+  // }
 }
 
 onMounted(() => {
   const allPhotos = photosStore.photoSearch("African");
-  if (allPhotos) {
-    photos.value = allPhotos
-  }
+  // if (allPhotos) {
+  //   photos.value = allPhotos
+  // }
 });
 </script>
 <template>

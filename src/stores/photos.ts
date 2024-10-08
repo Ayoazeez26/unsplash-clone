@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { searchPhotos, type PhotoObj } from '@/services/searchService'
 
 export const usePhotosStore = defineStore('photos', () => {
-  const photos = ref<PhotoObj[]>([])
+  const photos = ref<PhotoObj[] | []>([])
   const singlePhoto = ref<PhotoObj | null>(null);
   const isLoading = ref(false);
   const showModal = ref(true);
