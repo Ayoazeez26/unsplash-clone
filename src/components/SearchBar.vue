@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { usePhotosStore } from '@/stores/photos'
 import IconSearch from './icons/IconSearch.vue'
 import { type PhotoObj } from '@/services/searchService'
@@ -8,6 +8,9 @@ const photosStore = usePhotosStore();
 const searchTerm = ref('')
 const photos = ref<PhotoObj[]>([]);
 const show = ref(false);
+watch(searchTerm, (val) => {
+    show.value = false;
+})
 const searchPhotos = async () => {
   if (!searchTerm.value) return;
   show.value = true;
@@ -27,7 +30,7 @@ onMounted(() => {
 </script>
 <template>
   <div class="hero">
-    <div v-if="photosStore.isLoading">Searching for <span>"{{ searchTerm }}"</span></div>
+    <div v-if="photosStore.isLoading && show">Searching for <span>"{{ searchTerm }}"</span></div>
     <div v-if="!photosStore.isLoading && show">Search results for <span>"{{ searchTerm }}"</span></div>
     <div class="hero--search">
       <input
