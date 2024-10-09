@@ -49,6 +49,9 @@ onMounted(() => {
 .hero {
   background-color: $grey;
   padding: 80px 0 140px;
+  @media screen and (max-width: 1158px) {
+    padding: 80px 16px 120px;
+  }
   &--search {
     width: 100%;
     max-width: 1120px;

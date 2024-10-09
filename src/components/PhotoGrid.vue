@@ -45,7 +45,9 @@ const selectPhoto = (photo: PhotoObj) => {
   max-width: 1020px;
   margin: 0 auto;
   margin-top: -60px;
-
+  @media screen and (max-width: 1158px) {
+    padding: 0 16px ;
+  }
   & .photo-layout {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
