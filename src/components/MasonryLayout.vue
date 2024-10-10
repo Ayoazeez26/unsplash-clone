@@ -2,7 +2,6 @@
   <div class="masonry-container">
     <div v-for="(column, index) in imageColumns" :key="index" class="masonry-column">
       <template v-for="photo in column" :key="photo.id">
-        <!-- Assuming you have an Image component or using <img /> tag -->
         <SinglePhoto :photo="photo" />
       </template>
     </div>
@@ -14,10 +13,9 @@ import { computed, type PropType, defineProps } from 'vue'
 import type { PhotoObj } from '@/services/searchService'
 import SinglePhoto from './SinglePhoto.vue'
 
-// Define Props
 const props = defineProps({
   photos: {
-    type: Array as PropType<PhotoObj[]>, // Replace 'PhotoObj[]' with the actual image object type if available
+    type: Array as PropType<PhotoObj[]>,
     required: true,
   },
   columnCount: {
@@ -26,7 +24,6 @@ const props = defineProps({
   },
 })
 
-// Function to generate image columns
 const generateImageColumns = (photos: PhotoObj[], columnCount: number) => {
   const columns: PhotoObj[][] = Array.from({ length: columnCount }, () => [])
   
@@ -38,14 +35,14 @@ const generateImageColumns = (photos: PhotoObj[], columnCount: number) => {
   return columns
 }
 
-// Computed property to hold the image columns
 const imageColumns = computed(() => generateImageColumns(props.photos, props.columnCount))
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .masonry-container {
   display: flex;
-  gap: 20px; /* You can adjust the gap between columns */
+  gap: 50px; /* You can adjust the gap between columns */
+  justify-content: center;
 }
 
 .masonry-column {
@@ -53,5 +50,8 @@ const imageColumns = computed(() => generateImageColumns(props.photos, props.col
   display: flex;
   flex-direction: column;
   gap: 20px; /* Adjust the gap between images in a column */
+  @media screen and (max-width: 1040px) {
+    max-width: fit-content;
+  }
 }
 </style>

@@ -1,27 +1,58 @@
 <script></script>
 <script setup lang="ts">
-// import { ref, reactive } from 'vue';
-import SkeletonLoader from './SkeletonLoader.vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import MasonryLayout from './MasonryLayout.vue'
+import MasonrySkeleton from './MasonrySkeleton.vue'
 import { usePhotosStore } from '@/stores/photos'
 
-const photosStore = usePhotosStore();
+const photosStore = usePhotosStore()
 
+const columnCount = ref<number>(3);
+
+// Function to check screen size and update column count
+const updateColumnCount = () => {
+  const width = window.innerWidth;
+  
+  if (width <= 768) {
+    columnCount.value = 1;
+  } else if (width <= 1040) {
+    columnCount.value = 2;
+  } else {
+    columnCount.value = 3;
+  }
+};
+
+// Function to set up media queries
+const setupResponsiveColumns = () => {
+  // Initial check when component is mounted
+  updateColumnCount();
+
+  // Add event listener for window resizing
+  window.addEventListener('resize', updateColumnCount);
+};
+
+// Clean up event listeners when the component is destroyed
+onMounted(() => {
+  setupResponsiveColumns();
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateColumnCount);
+});
 </script>
 <template>
   <div class="container">
     <div ref="photoLayout" class="photo-layout">
       <template v-if="photosStore.isLoading && photosStore.page === 1">
-        <div v-for="item in 6" :key="item" class="photos">
-          <SkeletonLoader />
-        </div>
+        <MasonrySkeleton :count="8" :columnCount="columnCount" />
       </template>
       <template v-else>
-        <div class="photo-layout--column">
-          <MasonryLayout
-            :photos="photosStore.photos"
-          />
+        <div>
+          <MasonryLayout :photos="photosStore.photos" :columnCount="columnCount" />
         </div>
+        <template v-if="photosStore.isLoading && photosStore.page !== 1">
+          <MasonrySkeleton :count="10" :columnCount="columnCount" />
+        </template>
       </template>
     </div>
   </div>
@@ -36,63 +67,7 @@ const photosStore = usePhotosStore();
     padding: 0 16px;
   }
   & .photo-layout {
-    // display: grid;
-    // grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    // grid-auto-rows: 300px;
-    // // grid-template-rows: masonry;
-    // grid-auto-flow: dense;
     width: 100%;
-    display: flex;
-    // gap: 20px;
-    // &--column {
-    //   display: flex;
-    //   flex-direction: column;
-    //   margin: 1rem;
-    // }
-    & .photos {
-      cursor: pointer;
-      overflow: hidden;
-      position: relative;
-      border-radius: 8px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      width: 300px;
-      margin-bottom: 1rem;
-      &--details {
-        position: absolute;
-        border-radius: 8px;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(
-          to bottom,
-          rgba(0, 0, 0, 0) 0%,
-          rgba(0, 0, 0, 0.1) 50%,
-          rgba(0, 0, 0, 0.9) 100%
-        );
-        display: flex;
-        align-items: flex-end;
-        padding: 20px;
-        color: white;
-        &__name {
-          font-size: 18px;
-        }
-        &__location {
-          font-size: 12px;
-        }
-      }
-
-      &:nth-child(even) {
-        height: 450px;
-        grid-row: span 3;
-      }
-      &:nth-child(odd) {
-        height: 350px;
-        grid-row: span 2;
-      }
-    }
   }
 }
 </style>

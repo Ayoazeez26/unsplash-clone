@@ -5,7 +5,7 @@ import IconClose from "@/components/icons/IconClose.vue"
 const photosStore = usePhotosStore()
 </script>
 <template>
-  <div v-if="photosStore.singlePhoto" class="container">
+  <div v-if="photosStore.singlePhoto" @click="photosStore.showModal = false" class="container">
     <IconClose @click="photosStore.showModal = false" class="close" />
     <div
       class="photo"
@@ -39,6 +39,7 @@ const photosStore = usePhotosStore()
     background-color: white;
     display: flex;
     align-items: flex-end;
+    pointer-events:all;
     &--details {
       padding: 40px 60px;
       background-color: white;

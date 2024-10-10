@@ -53,14 +53,17 @@ onMounted(async () => {
       <p v-if="!photosStore.isLoading && show">
         Search results for <span>"{{ searchTerm }}"</span>
       </p>
-      <input
+      <div class="relative">
+
+        <input
         type="text"
         v-model="searchTerm"
         @keyup.enter="searchPhotos"
         placeholder="Search for photo"
         class="hero--search__input"
-      />
-      <IconSearch class="hero--search__icon" />
+        />
+        <IconSearch class="hero--search__icon" />
+      </div>
     </div>
   </div>
 </template>
@@ -76,6 +79,10 @@ onMounted(async () => {
     color: $blue-2;
     font-size: 38px;
     font-weight: 600;
+    margin-bottom: 20px;
+    @media screen and (max-width: 768px) {
+      font-size: 24px;
+    }
     & span {
       color: $blue-3;
       font-weight: 600;
@@ -104,10 +111,13 @@ onMounted(async () => {
     &__icon {
       position: absolute;
       left: 16px;
-      top: 68px;
+      top: 7px;
       width: 16px;
       color: $grey-2;
     }
   }
+}
+.relative {
+  position: relative;
 }
 </style>
