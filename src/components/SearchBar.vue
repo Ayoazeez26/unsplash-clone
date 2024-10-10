@@ -1,38 +1,58 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, onBeforeUnmount } from 'vue'
 import { usePhotosStore } from '@/stores/photos'
 import IconSearch from './icons/IconSearch.vue'
-import { type PhotoObj } from '@/services/searchService'
+import { type QueryObj } from '@/services/searchService'
 
-const photosStore = usePhotosStore();
+const photosStore = usePhotosStore()
 const searchTerm = ref('')
-const photos = ref<PhotoObj[]>([]);
-const show = ref(false);
-watch(searchTerm, (val) => {
-    show.value = false;
+const show = ref(false)
+watch(searchTerm, () => {
+  show.value = false
+  photosStore.page = 1;
 })
 const searchPhotos = async () => {
-  if (!searchTerm.value) return;
-  show.value = true;
-  const allPhotos = photosStore.photoSearch(searchTerm.value);
-  // if (allPhotos) {
-  //   photos.value = allPhotos
-  //   // show.value = false;
-  // }
+  const payload = {
+    query: searchTerm.value,
+    page: photosStore.page
+  }
+  if (!searchTerm.value) return
+  show.value = true
+  await photosStore.photoSearch(payload)
+  photosStore.page += 1;
 }
 
-onMounted(() => {
-  const allPhotos = photosStore.photoSearch("African");
-  // if (allPhotos) {
-  //   photos.value = allPhotos
-  // }
+const handleScroll = () => {
+  const buffer = 300;
+  const bottomOfWindow =
+    window.innerHeight + window.scrollY >= document.documentElement.offsetHeight - buffer;
+  if (bottomOfWindow && !photosStore.isLoading && photosStore.page <= photosStore.totalPages) {
+    searchPhotos();
+  }
+};
+
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
+
+onMounted(async () => {
+  const payload: QueryObj = {
+    query: 'African',
+    per_page: 8
+  }
+  await photosStore.photoSearch(payload)
+  window.addEventListener('scroll', handleScroll);
+})
 </script>
 <template>
   <div class="hero">
-    <div v-if="photosStore.isLoading && show">Searching for <span>"{{ searchTerm }}"</span></div>
-    <div v-if="!photosStore.isLoading && show">Search results for <span>"{{ searchTerm }}"</span></div>
     <div class="hero--search">
+      <p v-if="photosStore.isLoading && show">
+        Searching for <span>"{{ searchTerm }}"</span>
+      </p>
+      <p v-if="!photosStore.isLoading && show">
+        Search results for <span>"{{ searchTerm }}"</span>
+      </p>
       <input
         type="text"
         v-model="searchTerm"
@@ -51,6 +71,15 @@ onMounted(() => {
   padding: 80px 0 140px;
   @media screen and (max-width: 1158px) {
     padding: 80px 16px 120px;
+  }
+  & p {
+    color: $blue-2;
+    font-size: 38px;
+    font-weight: 600;
+    & span {
+      color: $blue-3;
+      font-weight: 600;
+    }
   }
   &--search {
     width: 100%;
@@ -75,7 +104,7 @@ onMounted(() => {
     &__icon {
       position: absolute;
       left: 16px;
-      top: 7px;
+      top: 68px;
       width: 16px;
       color: $grey-2;
     }

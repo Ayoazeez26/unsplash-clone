@@ -1,39 +1,26 @@
 <script></script>
 <script setup lang="ts">
+// import { ref, reactive } from 'vue';
 import SkeletonLoader from './SkeletonLoader.vue'
+import MasonryLayout from './MasonryLayout.vue'
 import { usePhotosStore } from '@/stores/photos'
-import type { PhotoObj } from '@/services/searchService'
 
-const photosStore = usePhotosStore()
+const photosStore = usePhotosStore();
 
-const selectPhoto = (photo: PhotoObj) => {
-  photosStore.singlePhoto = photo;
-  photosStore.showModal = true;
-}
 </script>
 <template>
   <div class="container">
-    <div class="photo-layout">
-      <template v-if="photosStore.isLoading">
+    <div ref="photoLayout" class="photo-layout">
+      <template v-if="photosStore.isLoading && photosStore.page === 1">
         <div v-for="item in 6" :key="item" class="photos">
           <SkeletonLoader />
         </div>
       </template>
       <template v-else>
-        <div
-          v-for="photo in photosStore.photos"
-          :key="photo.id"
-          @click="selectPhoto(photo)"
-          class="photos"
-          :style="{ backgroundImage: `url(${photo.urls.small})` }"
-        >
-          <!-- <img :src="photo.urls.small" :alt="photo.alt_description" /> -->
-          <div class="photos--details">
-            <div>
-              <p class="photos--details__name">{{ photo.user.name }}</p>
-              <p class="photos--details__location">{{ photo.user.location }}</p>
-            </div>
-          </div>
+        <div class="photo-layout--column">
+          <MasonryLayout
+            :photos="photosStore.photos"
+          />
         </div>
       </template>
     </div>
@@ -46,15 +33,22 @@ const selectPhoto = (photo: PhotoObj) => {
   margin: 0 auto;
   margin-top: -60px;
   @media screen and (max-width: 1158px) {
-    padding: 0 16px ;
+    padding: 0 16px;
   }
   & .photo-layout {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-auto-rows: 300px;
-    // grid-template-rows: masonry;
-    grid-auto-flow: dense;
-    gap: 20px;
+    // display: grid;
+    // grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    // grid-auto-rows: 300px;
+    // // grid-template-rows: masonry;
+    // grid-auto-flow: dense;
+    width: 100%;
+    display: flex;
+    // gap: 20px;
+    // &--column {
+    //   display: flex;
+    //   flex-direction: column;
+    //   margin: 1rem;
+    // }
     & .photos {
       cursor: pointer;
       overflow: hidden;
@@ -63,6 +57,8 @@ const selectPhoto = (photo: PhotoObj) => {
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
+      width: 300px;
+      margin-bottom: 1rem;
       &--details {
         position: absolute;
         border-radius: 8px;
