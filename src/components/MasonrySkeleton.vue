@@ -55,7 +55,9 @@ const imageColumns = computed(() => generateImageColumns(props.count, props.colu
   gap: 20px; /* Adjust the gap between images in a column */
   max-width: fit-content;
   @media screen and (max-width: 768px) {
-    min-width: 100%;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
   & .empty {

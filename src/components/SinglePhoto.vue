@@ -45,7 +45,9 @@ const selectPhoto = (photo: PhotoObj) => {
   width: 300px;
   margin-bottom: 1rem;
   @media screen and (max-width: 768px) {
-    min-width: 100%;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
   }
   &--details {
     position: absolute;

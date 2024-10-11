@@ -97,7 +97,7 @@ onMounted(async () => {
     margin: 0 auto;
     position: relative;
     &__input {
-      padding: 14px;
+      padding: 18px;
       padding-left: 48px;
       width: 100%;
       border-radius: 6px;
@@ -114,7 +114,7 @@ onMounted(async () => {
     &__icon {
       position: absolute;
       left: 16px;
-      top: 7px;
+      top: 12px;
       width: 16px;
       color: $grey-2;
     }

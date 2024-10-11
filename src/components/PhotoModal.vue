@@ -26,12 +26,14 @@ const photosStore = usePhotosStore()
   background-color: rgba(0, 0, 0, 0.4);
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0;
   left: 0;
   & .photo {
     width: 80%;
     height: 80%;
-    margin: 10% auto;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
