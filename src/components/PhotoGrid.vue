@@ -7,33 +7,33 @@ import { usePhotosStore } from '@/stores/photos'
 
 const photosStore = usePhotosStore()
 
-const columnCount = ref<number>(3);
+const columnCount = ref<number>(3)
 
 const updateColumnCount = () => {
-  const width = window.innerWidth;
-  
+  const width = window.innerWidth
+
   if (width <= 768) {
-    columnCount.value = 1;
+    columnCount.value = 1
   } else if (width <= 1040) {
-    columnCount.value = 2;
+    columnCount.value = 2
   } else {
-    columnCount.value = 3;
+    columnCount.value = 3
   }
-};
+}
 
 const setupResponsiveColumns = () => {
-  updateColumnCount();
+  updateColumnCount()
 
-  window.addEventListener('resize', updateColumnCount);
-};
+  window.addEventListener('resize', updateColumnCount)
+}
 
 onMounted(() => {
-  setupResponsiveColumns();
-});
+  setupResponsiveColumns()
+})
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateColumnCount);
-});
+  window.removeEventListener('resize', updateColumnCount)
+})
 </script>
 <template>
   <div class="container">

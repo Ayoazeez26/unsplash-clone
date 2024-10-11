@@ -19,21 +19,12 @@ import { usePhotosStore } from '@/stores/photos'
 import type { PhotoObj } from '@/services/searchService'
 import SkeletonLoader from './SkeletonLoader.vue'
 
-// interface Props {
-//   photo: PhotoObj
-// }
-
-// const props = withDefaults(defineProps<Props>(), {
-//   photo:
-// });
 const props = defineProps(['photo'])
 const showSkeleton = ref(true)
 const img = new Image()
 img.src = props.photo.urls.small
 img.onload = () => {
-  // console.log('old skeleton value is => ', showSkeleton.value)
   showSkeleton.value = false
-  // console.log('new skeleton value is => ', showSkeleton.value)
 }
 const photosStore = usePhotosStore()
 const selectPhoto = (photo: PhotoObj) => {
@@ -54,7 +45,7 @@ const selectPhoto = (photo: PhotoObj) => {
   width: 300px;
   margin-bottom: 1rem;
   @media screen and (max-width: 768px) {
-    width: 100%;
+    min-width: 100%;
   }
   &--details {
     position: absolute;

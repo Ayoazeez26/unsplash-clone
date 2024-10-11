@@ -54,7 +54,7 @@ const imageColumns = computed(() => generateImageColumns(props.photos, props.col
     max-width: fit-content;
   }
   @media screen and (max-width: 768px) {
-    width: 100%;
+    min-width: 100%;
   }
 }
 </style>

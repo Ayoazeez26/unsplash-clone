@@ -51,10 +51,10 @@ onMounted(async () => {
 <template>
   <div class="hero">
     <div class="hero--search">
-      <p v-if="photosStore.isLoading && show">
+      <p v-if="photosStore.isLoading && show && !defaultSearch">
         Searching for <span>"{{ searchTerm }}"</span>
       </p>
-      <p v-if="!photosStore.isLoading && show">
+      <p v-if="!photosStore.isLoading && show && !defaultSearch">
         Search results for <span>"{{ searchTerm }}"</span>
       </p>
       <div class="relative">
