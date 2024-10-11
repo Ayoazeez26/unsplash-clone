@@ -50,13 +50,21 @@ const photosStore = usePhotosStore()
         font-size: 28px;
       }
     }
+    @media screen and (max-width: 768px) {
+      width: 90%;
+      height: 90%;
+    }
   }
   .close {
     position: absolute;
-    right: 2rem;
-    top: 2rem;
+    right: 5rem;
+    top: 5rem;
     color: $grey-4;
     cursor: pointer;
+    @media screen and (max-width: 768px) {
+      top: 1rem;
+      right: 1rem;
+    }
   }
 }
 </style>

@@ -53,6 +53,9 @@ const selectPhoto = (photo: PhotoObj) => {
   background-position: center;
   width: 300px;
   margin-bottom: 1rem;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
   &--details {
     position: absolute;
     border-radius: 8px;
