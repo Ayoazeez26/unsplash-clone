@@ -9,7 +9,6 @@ const photosStore = usePhotosStore()
 
 const columnCount = ref<number>(3);
 
-// Function to check screen size and update column count
 const updateColumnCount = () => {
   const width = window.innerWidth;
   
@@ -22,16 +21,12 @@ const updateColumnCount = () => {
   }
 };
 
-// Function to set up media queries
 const setupResponsiveColumns = () => {
-  // Initial check when component is mounted
   updateColumnCount();
 
-  // Add event listener for window resizing
   window.addEventListener('resize', updateColumnCount);
 };
 
-// Clean up event listeners when the component is destroyed
 onMounted(() => {
   setupResponsiveColumns();
 });

@@ -6,34 +6,37 @@ import { type QueryObj } from '@/services/searchService'
 
 const photosStore = usePhotosStore()
 const searchTerm = ref('')
+const defaultSearch = ref('African')
 const show = ref(false)
 watch(searchTerm, () => {
   show.value = false
-  photosStore.page = 1;
+  photosStore.page = 1
+  defaultSearch.value = ''
 })
 const searchPhotos = async () => {
   const payload = {
-    query: searchTerm.value,
+    query: defaultSearch.value ? defaultSearch.value : searchTerm.value,
     page: photosStore.page
   }
-  if (!searchTerm.value) return
-  show.value = true
-  await photosStore.photoSearch(payload)
-  photosStore.page += 1;
+  if (searchTerm.value || defaultSearch.value) {
+    show.value = true
+    await photosStore.photoSearch(payload)
+    photosStore.page += 1
+  }
 }
 
 const handleScroll = () => {
-  const buffer = 300;
+  const buffer = 300
   const bottomOfWindow =
-    window.innerHeight + window.scrollY >= document.documentElement.offsetHeight - buffer;
+    window.innerHeight + window.scrollY >= document.documentElement.offsetHeight - buffer
   if (bottomOfWindow && !photosStore.isLoading && photosStore.page <= photosStore.totalPages) {
-    searchPhotos();
+    searchPhotos()
   }
-};
+}
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+  window.removeEventListener('scroll', handleScroll)
+})
 
 onMounted(async () => {
   const payload: QueryObj = {
@@ -41,7 +44,8 @@ onMounted(async () => {
     per_page: 8
   }
   await photosStore.photoSearch(payload)
-  window.addEventListener('scroll', handleScroll);
+  photosStore.page += 1
+  window.addEventListener('scroll', handleScroll)
 })
 </script>
 <template>
@@ -54,13 +58,12 @@ onMounted(async () => {
         Search results for <span>"{{ searchTerm }}"</span>
       </p>
       <div class="relative">
-
         <input
-        type="text"
-        v-model="searchTerm"
-        @keyup.enter="searchPhotos"
-        placeholder="Search for photo"
-        class="hero--search__input"
+          type="text"
+          v-model="searchTerm"
+          @keyup.enter="searchPhotos"
+          placeholder="Search for photo"
+          class="hero--search__input"
         />
         <IconSearch class="hero--search__icon" />
       </div>
